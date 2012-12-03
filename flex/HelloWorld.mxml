@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mx:Application
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    backgroundColor="#A9C0E7"
+    layout="vertical"
+    verticalAlign="middle"
+    creationComplete="srv.findWelcomeHistory()">
+
+    <mx:Style>
+        .Panel {
+            padding-left: 8px; padding-top: 8px;
+            padding-right: 8px; padding-bottom: 8px;
+        }
+        .Result { font-size: 26px; color: white; }
+    </mx:Style>
+
+    <mx:RemoteObject id="srv" destination="helloWorldService" />
+
+    <mx:Panel styleName="Panel" title="Ejemplo de Hola Mundo con GraniteDS">
+        <mx:Label text="Teclea tu nombre:"/>
+        <mx:TextInput id="nameInput" width="200" />
+        <mx:Button label="Enviar Saludo"
+           click="srv.sayHello(nameInput.text);srv.findWelcomeHistory()"/>
+        
+        <mx:Label text="History:"/>
+        <mx:DataGrid dataProvider="{srv.findWelcomeHistory.lastResult}"
+          width="200" height="200"/>
+    </mx:Panel>
+        
+    <mx:Label styleName="Result" text="{srv.sayHello.lastResult}"/>
+    
+</mx:Application>

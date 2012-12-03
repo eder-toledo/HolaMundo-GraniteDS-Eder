@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+                        http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+    <!-- Informacion acerca del ejemplo -->
+    <display-name>Hola Mundo con GraniteDS</display-name>
+    <description>Este pequeño ejemplo implementa la tecnologia GraniteDS</description>
+
+    <!-- Creamos un listener a travez de GraniteDS -->
+    <listener>
+        <listener-class>org.granite.config.GraniteConfigListener</listener-class>
+    </listener>
+
+    <!-- Configuracion para el canal AMF -->
+    <filter>
+        <filter-name>AMFMessageFilter</filter-name>
+        <filter-class>org.granite.messaging.webapp.AMFMessageFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AMFMessageFilter</filter-name>
+        <url-pattern>/graniteamf/*</url-pattern>
+    </filter-mapping>
+
+    
+    <servlet>
+        <servlet-name>AMFMessageServlet</servlet-name>
+        <servlet-class>org.granite.messaging.webapp.AMFMessageServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AMFMessageServlet</servlet-name>
+        <url-pattern>/graniteamf/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Establecemos el archivo que iniciara por default -->
+    <welcome-file-list>
+        <welcome-file>HelloWorld.swf</welcome-file>
+    </welcome-file-list>
+
+</web-app>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<application>
+    <display-name>Hola Mundo con GraniteDS</display-name>
+    <module>
+        <web>
+            <web-uri>helloworld.war</web-uri>
+            <context-root>/helloworld</context-root>
+        </web>
+    </module>
+    <module>
+        <ejb>helloworld.jar</ejb>
+    </module>
+</application>
+

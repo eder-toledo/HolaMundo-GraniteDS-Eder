@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Hola Mundo con GraniteDS" default="deploy">
+
+    <!-- Es necesario modificar la FLEX_HOME/JBOSS_HOME con las rutas en su PC -->
+    <property name="FLEX_HOME" value="E:\flex-sdk"/>
+    <property name="JBOSS_HOME" value="D:\jboss-4.2.3.GA"/>
+    
+    <!-- Dirigimos a la ruta de ant en FLEX-SDK -->
+    <taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+
+    <!-- A partir de aqui realiza la compilacion en el FLEX-SDK -->
+    <target name="mxmlc">
+        <mxmlc
+            file="flex/HelloWorld.mxml"
+            output="build/HelloWorld.swf"
+            services="services-config.xml"
+            context-root="helloworld">
+            
+            <source-path path-element="flex" />
+
+            
+            <includes symbol="org.test.Welcome" />
+            
+            
+            <compiler.include-libraries dir="lib" append="true">
+                <include name="granite-essentials.swc" />
+            </compiler.include-libraries>
+        </mxmlc>
+    </target>
+
+    <!-- Creamos un archivo .ear compatible con JBOSS -->
+    <target name="ear" depends="mxmlc">
+        <mkdir dir="build"/>
+        <jar destfile="build/helloworld.jar">
+            <fileset dir="bin" includes="**/*.class"/>
+            <zipfileset file="persistence.xml" prefix="META-INF" />
+        </jar>
+        <war destfile="build/helloworld.war" webxml="web.xml">
+            <zipfileset file="services-config.xml" prefix="WEB-INF/flex" />
+            <zipfileset file="granite-config.xml" prefix="WEB-INF/granite" />
+            <fileset dir="build" includes="*.swf"/>
+        </war>
+        <ear destfile="build/helloworld.ear" appxml="application.xml">
+            <fileset dir="build" includes="*.jar,*.war"/>
+            <zipfileset dir="lib" includes="granite*.jar" prefix="lib" />
+        </ear>
+    </target>
+
+    <!-- Lo agregamos al Deploy de nuestro JBOSS -->
+    <target name="deploy" depends="ear">
+        <copy todir="${JBOSS_HOME}/server/default/deploy" file="build/helloworld.ear"/>
+    </target>
+
+</project>
+
